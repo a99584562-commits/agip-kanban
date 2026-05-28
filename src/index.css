@@ -2,23 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
+:root,
+:root[data-theme='light'] {
+  --bg: #f4f6fb;
+  --bg-soft: #eceff6;
+  --surface: #ffffff;
+  --surface-2: #edf0f7;
+  --surface-3: #f4f6fb;
+  --border: #e5e8ef;
+  --border-hi: #d8dce6;
+  --primary: #0b2a6b;
+  --primary-hover: #15348a;
+  --on-primary: #ffffff;
+  --accent: #0b2a6b;
+  --on-accent: #ffffff;
+  --text: #0b1733;
+  --text-2: #5a6378;
+  --text-3: #8892a8;
+  --text-4: #b6bccc;
+  --avatar-gradient: linear-gradient(135deg, #0b2a6b, #3a5dc9);
+  --card-shadow: 0 1px 0 rgba(11, 42, 107, 0.02);
+  --column-shadow: 0 1px 2px rgba(11, 42, 107, 0.04);
+  --topbar-shadow: 0 1px 0 rgba(11, 42, 107, 0.04);
+  --segment-bg: rgba(255, 255, 255, 0.7);
+  --segment-border: rgba(11, 42, 107, 0.08);
+  --segment-shadow: 0 1px 0 rgba(11, 42, 107, 0.04),
+    0 6px 18px rgba(11, 42, 107, 0.06);
+  --gate-shadow: 0 30px 70px rgba(11, 42, 107, 0.12);
+  --bg-image:
+    radial-gradient(900px 500px at 0% -10%, rgba(11, 42, 107, 0.05), transparent 55%),
+    radial-gradient(800px 500px at 100% 0%, rgba(124, 157, 255, 0.05), transparent 55%);
+}
+
+:root[data-theme='dark'] {
+  --bg: #0a1230;
+  --bg-soft: #050a1e;
+  --surface: #131b3b;
+  --surface-2: #1a2347;
+  --surface-3: #0f1736;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hi: rgba(255, 255, 255, 0.14);
+  --primary: #f2c25c;
+  --primary-hover: #f5cf7d;
+  --on-primary: #0a1230;
+  --accent: #f2c25c;
+  --on-accent: #0a1230;
+  --text: #e9ecf4;
+  --text-2: #9aa2b8;
+  --text-3: #6c7390;
+  --text-4: #4d5475;
+  --avatar-gradient: linear-gradient(135deg, #3a4b86, #7c9dff);
+  --card-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  --column-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --topbar-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+  --segment-bg: rgba(255, 255, 255, 0.05);
+  --segment-border: rgba(255, 255, 255, 0.1);
+  --segment-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --gate-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  --bg-image:
+    radial-gradient(900px 500px at 80% -10%, rgba(124, 157, 255, 0.18), transparent 60%),
+    radial-gradient(800px 600px at 10% 100%, rgba(242, 194, 92, 0.06), transparent 55%);
+}
+
 @layer base {
   html,
   body,
   #root {
     margin: 0;
     padding: 0;
-    background:
-      radial-gradient(1200px 600px at 0% -10%, rgba(99, 102, 241, 0.06), transparent 60%),
-      radial-gradient(900px 500px at 100% 0%, rgba(16, 185, 129, 0.05), transparent 55%),
-      #f4f6fb;
-    color: #0b1220;
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    background-image: var(--bg-image);
+    font-family: 'Manrope', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    transition: background-color 0.4s ease;
   }
   body {
     min-height: 100dvh;
+  }
+  input[type='date'] {
+    color-scheme: light;
+  }
+  :root[data-theme='dark'] input[type='date'] {
+    color-scheme: dark;
   }
 }
 
@@ -28,24 +95,26 @@
     width: 10px;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: rgba(15, 23, 42, 0.12);
+    background: var(--border-hi);
     border-radius: 9999px;
     border: 2px solid transparent;
-    background-clip: padding-box;
-  }
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: rgba(15, 23, 42, 0.22);
     background-clip: padding-box;
   }
   .scrollbar-thin::-webkit-scrollbar-track {
     background: transparent;
   }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
   .eyebrow {
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
+    color: var(--text-3);
   }
   .grain {
     pointer-events: none;
@@ -55,4 +124,18 @@
     opacity: 0.025;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

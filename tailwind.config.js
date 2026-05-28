@@ -1,44 +1,41 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
+  darkMode: ['selector', '[data-theme="dark"]'],
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-        display: ['"Manrope"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        sans: ['"Manrope"', 'system-ui', 'sans-serif'],
+        display: ['"Manrope"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       colors: {
-        ink: {
-          900: '#0b1220',
-          800: '#1f2937',
-          700: '#334155',
-          500: '#64748b',
-          400: '#94a3b8',
-          300: '#cbd5e1',
-          200: '#e2e8f0',
-          100: '#eef2f7',
-          50: '#f4f6fb',
-        },
+        bg: 'var(--bg)',
+        'bg-soft': 'var(--bg-soft)',
+        surface: 'var(--surface)',
+        'surface-2': 'var(--surface-2)',
+        'surface-3': 'var(--surface-3)',
+        border: 'var(--border)',
+        'border-hi': 'var(--border-hi)',
+        primary: 'var(--primary)',
+        'on-primary': 'var(--on-primary)',
+        accent: 'var(--accent)',
+        'on-accent': 'var(--on-accent)',
+        text: 'var(--text)',
+        'text-2': 'var(--text-2)',
+        'text-3': 'var(--text-3)',
+        'text-4': 'var(--text-4)',
       },
       boxShadow: {
-        soft: '0 1px 0 rgba(15,23,42,.04), 0 1px 2px rgba(15,23,42,.05)',
-        lift: '0 2px 0 rgba(15,23,42,.03), 0 12px 28px -16px rgba(15,23,42,.18), 0 4px 12px -6px rgba(15,23,42,.08)',
-        glow: '0 1px 0 rgba(255,255,255,.6) inset, 0 12px 32px -14px rgba(2,6,23,.18), 0 6px 16px -10px rgba(2,6,23,.10)',
-        rail: 'inset 0 1px 0 rgba(255,255,255,.7), 0 1px 1px rgba(15,23,42,.04)',
+        card: 'var(--card-shadow)',
+        column: 'var(--column-shadow)',
+        topbar: 'var(--topbar-shadow)',
+        segment: 'var(--segment-shadow)',
+        gate: 'var(--gate-shadow)',
       },
       transitionTimingFunction: {
         glide: 'cubic-bezier(0.32, 0.72, 0, 1)',
         spring: 'cubic-bezier(0.22, 1, 0.36, 1)',
-      },
-      keyframes: {
-        'fade-up': {
-          from: { opacity: '0', transform: 'translateY(8px)' },
-          to: { opacity: '1', transform: 'translateY(0)' },
-        },
-      },
-      animation: {
-        'fade-up': 'fade-up .5s cubic-bezier(0.22,1,0.36,1) both',
       },
     },
   },

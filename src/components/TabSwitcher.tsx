@@ -1,81 +1,78 @@
 import type { GroupBy } from '../types'
-import { THEMES } from '../theme'
 
-const ORDER: GroupBy[] = ['speaker', 'priority', 'track']
+type Tab = { id: GroupBy; n: string; label: string }
+const TABS: Tab[] = [
+  { id: 'speaker', n: 'Отчёт №1', label: 'По спикерам' },
+  { id: 'priority', n: 'Отчёт №2', label: 'По приоритетам' },
+  { id: 'track', n: 'Отчёт №3', label: 'По целям' },
+]
 
 export function TabSwitcher({
   active,
   onChange,
+  variant = 'desktop',
 }: {
   active: GroupBy
   onChange: (g: GroupBy) => void
+  variant?: 'desktop' | 'mobile'
 }) {
+  if (variant === 'mobile') {
+    return (
+      <div className="flex border-b border-[var(--border)] bg-[var(--surface)]">
+        {TABS.map((t) => {
+          const isActive = active === t.id
+          return (
+            <button
+              key={t.id}
+              onClick={() => onChange(t.id)}
+              className="relative flex-1 px-1 py-3.5 text-[13px] transition-colors"
+              style={{
+                color: isActive ? 'var(--text)' : 'var(--text-2)',
+                fontWeight: isActive ? 700 : 500,
+              }}
+            >
+              {t.label}
+              {isActive && (
+                <span
+                  className="absolute left-1/2 -translate-x-1/2 bottom-0 h-[2px] w-10 rounded-full"
+                  style={{ background: 'var(--accent)' }}
+                />
+              )}
+            </button>
+          )
+        })}
+      </div>
+    )
+  }
+
   return (
-    <div className="flex gap-2.5">
-      {ORDER.map((id) => {
-        const t = THEMES[id]
-        const isActive = active === id
+    <div className="flex gap-8">
+      {TABS.map((t) => {
+        const isActive = active === t.id
         return (
           <button
-            key={id}
-            onClick={() => onChange(id)}
-            className={`group relative rounded-2xl p-[3px] transition-all duration-500 ease-glide focus:outline-none ${
-              isActive
-                ? `ring-2 ${t.ringStrong} shadow-glow`
-                : `ring-1 ${t.ringSoft} hover:ring-2 ${t.ringStrong} shadow-soft`
-            }`}
-            style={
-              isActive
-                ? { background: `linear-gradient(180deg, ${t.hex}33, ${t.hex}10)` }
-                : undefined
-            }
+            key={t.id}
+            onClick={() => onChange(t.id)}
+            className="group relative flex items-baseline gap-2 pb-3.5 transition-colors"
+            style={{ marginBottom: -1 }}
           >
-            <div
-              className={`rounded-[14px] px-4 py-2.5 text-left transition-colors duration-300 ${
-                isActive ? `${t.surfaceActive} ${t.textOn}` : 'bg-white text-ink-900'
-              }`}
-              style={{ minWidth: 178 }}
+            <span className="eyebrow text-[var(--text-3)]">{t.n}</span>
+            <span
+              className="text-[15px] transition-colors"
+              style={{
+                color: isActive ? 'var(--text)' : 'var(--text-2)',
+                fontWeight: isActive ? 700 : 500,
+              }}
             >
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <div
-                    className={`eyebrow ${
-                      isActive ? 'text-white/70' : 'text-ink-400'
-                    }`}
-                  >
-                    Отчёт · {t.num}
-                  </div>
-                  <div
-                    className={`mt-0.5 font-display text-[14px] font-bold tracking-[-0.01em] ${
-                      isActive ? 'text-white' : 'text-ink-900'
-                    }`}
-                  >
-                    {t.label}
-                  </div>
-                </div>
-                <span
-                  className={`inline-flex h-7 w-7 items-center justify-center rounded-full transition-transform duration-500 ease-glide group-hover:-translate-y-[1px] group-hover:translate-x-[1px] ${
-                    isActive
-                      ? 'bg-white/15 text-white'
-                      : `${t.surfaceSoft} ${t.textAccent}`
-                  }`}
-                  aria-hidden
-                >
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 12h14M13 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </div>
-            </div>
+              {t.label}
+            </span>
+            <span
+              className="absolute left-0 right-0 -bottom-px h-[2px] rounded-full transition-opacity"
+              style={{
+                background: 'var(--accent)',
+                opacity: isActive ? 1 : 0,
+              }}
+            />
           </button>
         )
       })}

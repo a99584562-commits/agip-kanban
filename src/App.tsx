@@ -143,16 +143,12 @@ export default function App() {
         pdfShort={PDF_SHORT[tab]}
         search={search}
         onSearch={setSearch}
+        count={filtered.length}
+        total={EVENTS.length}
       />
 
-      <div className="shrink-0 px-8 pt-4 border-b border-[var(--border)] flex items-end justify-between gap-6">
+      <div className="shrink-0 px-6 pt-3 border-b border-[var(--border)]">
         <TabSwitcher active={tab} onChange={setTab} />
-        <div className="pb-3 text-[12px] text-[var(--text-2)] whitespace-nowrap">
-          Июнь 2026 ·{' '}
-          <b className="text-[var(--text)] tabular-nums">{filtered.length}</b>
-          <span className="text-[var(--text-3)]"> / {EVENTS.length}</span>{' '}
-          мероприятий
-        </div>
       </div>
 
       <div className="flex-1 min-h-0 flex">

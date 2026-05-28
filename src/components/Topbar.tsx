@@ -87,6 +87,8 @@ export function DesktopTopbar({
   pdfShort,
   search,
   onSearch,
+  count,
+  total,
 }: {
   onExport: () => void
   exporting: boolean
@@ -94,20 +96,34 @@ export function DesktopTopbar({
   pdfShort: string
   search: string
   onSearch: (v: string) => void
+  count: number
+  total: number
 }) {
   return (
     <div
-      className="shrink-0 border-b border-[var(--border)] bg-[var(--surface)] px-8 py-4 flex items-center justify-between gap-6"
+      className="shrink-0 border-b border-[var(--border)] bg-[var(--surface)] px-6 py-2.5 flex items-center justify-between gap-6"
       style={{ boxShadow: 'var(--topbar-shadow)' }}
     >
-      <div className="flex items-center gap-3.5 shrink-0">
+      <div className="flex items-center gap-3 shrink-0">
         <div
           className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] text-[13px] font-extrabold tracking-wider"
           style={{ background: 'var(--accent)', color: 'var(--on-accent)' }}
         >
           АГ
         </div>
-        <div className="eyebrow">АГИП · Прототип</div>
+        <div className="leading-tight">
+          <div className="text-[14px] font-extrabold tracking-[-0.01em] text-[var(--text)]">
+            Отчёты по&nbsp;мероприятиям
+          </div>
+          <div className="text-[11px] text-[var(--text-3)]">
+            АГИП · Июнь 2026 ·{' '}
+            <b className="text-[var(--text-2)] tabular-nums">{count}</b>
+            {count !== total && (
+              <span className="text-[var(--text-3)]"> / {total}</span>
+            )}{' '}
+            мероприятий
+          </div>
+        </div>
       </div>
 
       <label className="flex items-center gap-2.5 rounded-xl border bg-[var(--surface-2)] border-[var(--border)] px-3.5 py-2.5 transition-colors focus-within:border-[var(--primary)] flex-1 max-w-[420px]">
@@ -142,22 +158,3 @@ export function DesktopTopbar({
   )
 }
 
-export function PageTitle({
-  count,
-  speakers,
-}: {
-  count: number
-  speakers: number
-}) {
-  return (
-    <div className="px-8 pt-6 pb-3">
-      <h1 className="text-[28px] md:text-[32px] font-extrabold leading-[1.1] tracking-[-0.02em] text-[var(--text)]">
-        Отчёты по&nbsp;мероприятиям
-      </h1>
-      <div className="mt-2 text-[13.5px] text-[var(--text-2)]">
-        Июнь 2026 · <b className="text-[var(--text)] tabular-nums">{count}</b>{' '}
-        мероприятий по {speakers}&nbsp;спикерам
-      </div>
-    </div>
-  )
-}

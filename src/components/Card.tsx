@@ -1,15 +1,13 @@
 import type { EventItem, GroupBy } from '../types'
 import { SPEAKER_BY_ID, ru, getPriority, getTrack } from '../types'
-import { Avatar, Pill, StatusBadge } from './primitives'
+import { Pill, StatusBadge } from './primitives'
 
 export function Card({
   ev,
   groupBy,
-  dense = false,
 }: {
   ev: EventItem
   groupBy: GroupBy
-  dense?: boolean
 }) {
   const sp = SPEAKER_BY_ID[ev.speakerId]
   const priority = getPriority(ev)
@@ -21,51 +19,41 @@ export function Card({
   })
 
   return (
-    <article className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-card transition-shadow duration-300 hover:border-[var(--border-hi)]">
-      <div className={dense ? 'p-3.5 space-y-2.5' : 'p-4 space-y-3'}>
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="flex-1 text-[15px] font-bold leading-snug text-[var(--text)] tracking-[-0.012em]">
-            {ev.title}
-          </h3>
+    <article className="rounded-xl border border-[var(--border)] bg-[var(--surface)] shadow-card transition-shadow duration-300 hover:border-[var(--border-hi)]">
+      <div className="p-3 space-y-2">
+        {/* meta row: date + status */}
+        <div className="flex items-center justify-between gap-2">
+          <div className="text-[11px] font-bold tracking-wider uppercase text-[var(--text-2)] tabular-nums">
+            {ru.shortDate(ev.date)}
+          </div>
           <StatusBadge status={ev.status} dense />
         </div>
 
-        <p className="text-[13px] leading-snug text-[var(--text-2)]">
-          {ev.goal}
-        </p>
+        {/* title */}
+        <h3 className="text-[13.5px] font-bold leading-snug text-[var(--text)] tracking-[-0.012em]">
+          {ev.title}
+        </h3>
 
+        {/* tags */}
         {tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-1">
             {tags.map((t) => (
               <Pill key={t} name={t} dense />
             ))}
           </div>
         )}
 
-        <div className="border-t border-dashed border-[var(--border)] pt-2.5 grid grid-cols-[auto,1fr] gap-y-1 gap-x-4 text-[12px]">
-          <span className="text-[var(--text-3)]">Дата</span>
-          <span className="text-right text-[var(--text)] tabular-nums">
-            {ru.formatDate(ev.date)}
-          </span>
-
+        {/* footer: ministry · author (· speaker for non-speaker tab) */}
+        <div className="pt-1.5 border-t border-dashed border-[var(--border)] text-[11px] text-[var(--text-3)] flex items-center gap-1.5 leading-snug">
+          <span className="truncate text-[var(--text-2)]">{ev.ministry}</span>
+          <span className="opacity-50">·</span>
+          <span className="truncate">{ev.author}</span>
           {groupBy !== 'speaker' && (
             <>
-              <span className="text-[var(--text-3)]">Спикер</span>
-              <span className="text-right text-[var(--text)] font-medium truncate">
-                {sp.short}
-              </span>
+              <span className="opacity-50">·</span>
+              <span className="truncate text-[var(--text-2)]">{sp.short}</span>
             </>
           )}
-
-          <span className="text-[var(--text-3)]">Ведомство</span>
-          <span className="text-right text-[var(--text)] truncate">
-            {ev.ministry}
-          </span>
-
-          <span className="text-[var(--text-3)]">Автор</span>
-          <span className="text-right text-[var(--text)] truncate">
-            {ev.author}
-          </span>
         </div>
       </div>
     </article>

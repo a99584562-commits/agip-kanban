@@ -35,8 +35,8 @@ function columnSubtitle(name: string, groupBy: GroupBy): string | null {
 
 export const Board = forwardRef<
   HTMLDivElement,
-  { events: EventItem[]; groupBy: GroupBy }
->(function Board({ events, groupBy }, ref) {
+  { events: EventItem[]; groupBy: GroupBy; hideEmpty?: boolean }
+>(function Board({ events, groupBy, hideEmpty = false }, ref) {
   const columns = getColumns(groupBy)
   const theme = THEMES[groupBy]
   const grouped = new Map<string, EventItem[]>()
@@ -45,16 +45,37 @@ export const Board = forwardRef<
     const k = getKey(ev, groupBy)
     grouped.get(k)?.push(ev)
   }
+  const visibleColumns = hideEmpty
+    ? columns.filter((c) => (grouped.get(c)?.length ?? 0) > 0)
+    : columns
 
   return (
     <div className="flex-1 min-h-0 overflow-x-auto scrollbar-thin">
-      <div ref={ref} className="flex gap-4 p-6 min-w-max h-full">
-        {columns.map((col, idx) => {
+      {visibleColumns.length === 0 ? (
+        <div className="h-full flex items-center justify-center p-10">
+          <div className="text-center max-w-md animate-fade-up">
+            <div className="eyebrow text-ink-400">Пусто</div>
+            <h3 className="mt-2 font-display text-[18px] font-bold text-ink-900">
+              Под текущий фильтр нет мероприятий
+            </h3>
+            <p className="mt-2 text-[13px] text-ink-500">
+              Снимите часть фильтров слева, чтобы увидеть данные.
+            </p>
+          </div>
+        </div>
+      ) : (
+      <div
+        ref={ref}
+        data-pdf-root
+        className="flex gap-4 p-6 min-w-max h-full"
+      >
+        {visibleColumns.map((col, idx) => {
           const items = grouped.get(col) ?? []
           const subtitle = columnSubtitle(col, groupBy)
           return (
             <div
               key={col}
+              data-pdf-column
               className="w-[300px] shrink-0 flex flex-col rounded-3xl bg-white/10 p-[5px] ring-1 ring-ink-200/60 shadow-soft animate-fade-up"
               style={{ animationDelay: `${idx * 40}ms` }}
             >
@@ -84,7 +105,10 @@ export const Board = forwardRef<
                   )}
                 </header>
 
-                <div className="flex-1 overflow-y-auto scrollbar-thin p-3 space-y-2.5">
+                <div
+                  data-pdf-column-body
+                  className="flex-1 overflow-y-auto scrollbar-thin p-3 space-y-2.5"
+                >
                   {items.length === 0 ? (
                     <div className="text-center text-[12px] text-ink-400 py-10 rounded-xl border border-dashed border-ink-200">
                       нет мероприятий
@@ -98,6 +122,7 @@ export const Board = forwardRef<
           )
         })}
       </div>
+      )}
     </div>
   )
 })

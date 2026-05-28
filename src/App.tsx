@@ -5,6 +5,7 @@ import { Board } from './components/Board'
 import {
   FiltersPanel,
   EMPTY_FILTERS,
+  hasActiveFilters,
   type Filters,
 } from './components/FiltersPanel'
 import { Gate, isAuthed } from './components/Gate'
@@ -121,7 +122,12 @@ export default function App() {
           collapsed={collapsed}
           onToggleCollapse={() => setCollapsed((c) => !c)}
         />
-        <Board ref={boardRef} events={filtered} groupBy={tab} />
+        <Board
+          ref={boardRef}
+          events={filtered}
+          groupBy={tab}
+          hideEmpty={hasActiveFilters(filters)}
+        />
       </div>
     </div>
   )

@@ -31,6 +31,20 @@ export const EMPTY_FILTERS: Filters = {
   authors: [],
 }
 
+export function hasActiveFilters(f: Filters): boolean {
+  return (
+    !!f.dateFrom ||
+    !!f.dateTo ||
+    !f.includeNoDate ||
+    f.speakers.length > 0 ||
+    f.priorities.length > 0 ||
+    f.tracks.length > 0 ||
+    f.formats.length > 0 ||
+    f.departments.length > 0 ||
+    f.authors.length > 0
+  )
+}
+
 function ChipGroup({
   label,
   options,
